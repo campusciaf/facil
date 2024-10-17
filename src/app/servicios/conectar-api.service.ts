@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ConectarApiService {
 
-  API: string='http://localhost/facil-apirest/';
+  API: string='http://localhost/facil-apirest';
   // API: string='https://dulcesymas.ciaf.digital/apirest';
   autorizacion = 'KFTDQFYvqbPLXkHTuXQJR4Qy3vUryK';
 
