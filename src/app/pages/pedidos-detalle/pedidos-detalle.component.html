@@ -1,0 +1,99 @@
+<app-menu></app-menu>
+<div id="content">
+    <div class="row mx-0 px-0 content">
+        <div class="col-12 px-4 py-2">
+            <div class="row mb-2">
+                <div class="col-xl-6 col-9">
+                    <h2 class="lh-16">
+                        <span class="fs-18 text-semibold color-2">Gestión</span><br>
+                        <span class="fs-14 fw-light"><a routerLink="/pedidos" class="btn-link link-no">Pedidos</a> / {{nombreCliente}}</span>
+                    </h2>
+                </div>
+                <div class="col-xl-6 col-3 pr-4 text-end">
+                    <button class="btn btn-sm btn-outline-warning px-2 py-0" ><i class="fa-solid fa-play" aria-hidden="true"></i> Tour</button>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col-12 card-header px-4 rounded-top">
+                    <div class="row">
+                        <div class="col-auto pt-2">
+                            <i class="pi pi-user fs-28 color-2"></i>
+                
+                        </div>
+                        <div class="col-auto align-self-center">
+                            <h6 class="fw-normal mb-0 fs-18 color-2">Pedido para</h6>
+                            <p class="text-secondary small">{{nombreCliente}}</p>
+                        </div>
+                        <div class="col-auto ms-auto">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 p-0">
+                    <p-table 
+                        #dt1
+                        [value]="detallePedido" 
+                        [paginator]="true"
+                        [rows]="10"
+                        [showCurrentPageReport]="true"
+                        [tableStyle]="{ 'min-width': '50rem' }"
+                        currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} entradas"
+                        [rowsPerPageOptions]="[10, 20, 30]"
+                        [loading]="loading"
+                        [globalFilterFields]="['producto_nombre', 'venta_producto_listo']"
+                        styleClass="p-datatable-gridlines small"
+                        >
+                        <ng-template pTemplate="caption">
+                            <div class="row">
+                                <div class="col-6">
+                                    <!-- <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button> -->
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-10 col-10 text-end">
+                                    
+                                    <span class="p-input-icon-left ml-auto">
+                                        <input pInputText type="text" (input)="dt1.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar" />
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                
+                                <th>Proveedor</th>
+                                <th pSortableColumn="producto_nombre">Producto<p-sortIcon field="producto_nombre"></p-sortIcon></th>
+                                
+                                <th>Cantidad</th>
+                                <th>Precio Venta</th>
+                                <th pSortableColumn="venta_producto_listo">Listado<p-sortIcon field="venta_producto_listo"></p-sortIcon></th>
+                            
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-dato>
+                            <tr>
+                                <td>{{ dato.proveedor_nombre }}</td>
+                                <td>{{ dato.producto_nombre }}</td>
+                                <td>{{ dato.producto_disponibles }}</td>
+                                <td>{{ dato.producto_venta }}</td>
+                                <td *ngIf="dato.venta_producto_listo==1; else cargando">
+                                    Pendiente
+                                    <a class="badge text-bg-success pointer" title="Marcar como listo" (click)="estadoAlistado(dato.id_venta_productos,0,dato.id_venta)">si</a> 
+                                </td>
+                                <ng-template #cargando>
+                                <td>
+                                    <span class="badge text-bg-success">Listo</span>
+                                    <a class="badge text-bg-danger pointer" title="marcar como no listo" (click)="estadoAlistado(dato.id_venta_productos,1,dato.id_venta)">x</a> 
+                                </td> 
+                                </ng-template>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="paginatorleft">
+                            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

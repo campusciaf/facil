@@ -1,0 +1,186 @@
+<app-menu></app-menu>
+<div id="content">
+    <div class="row mx-0 px-0 content">
+        <div class="col-12 px-4 py-2">
+            <div class="row mb-2">
+                <div class="col-xl-6 col-9">
+                    <h2 class="lh-16">
+                        <span class="fs-18 text-semibold color-2">Ventas</span><br>
+                        <span class="fs-14 fw-light">Mantén la vista en el objetivo y conviértete en el mejor en lo que haces.</span>
+                    </h2>
+                </div>
+                <div class="col-xl-6 col-3 pr-4 text-end">
+                    <button class="btn btn-sm btn-outline-warning px-2 py-0" ><i class="fa-solid fa-play" aria-hidden="true"></i> Tour</button>
+                </div>
+            </div>
+        
+            <div class="row" *ngIf="verificar==0">
+                <div class="col-12 card-header px-4 rounded-top">
+                    <div class="row">
+                        <div class="col-auto pt-2">
+                            <i class="pi pi-user fs-28 color-2"></i>
+                
+                        </div>
+                        <div class="col-auto align-self-center">
+                            <h6 class="fw-normal mb-0 fs-18 color-2">Ventas</h6>
+                            <p class="text-secondary small">en plataforma</p>
+                        </div>
+                        <div class="col-auto ms-auto" >
+                            <button type="button" class="btn btn-success btn-sm" (click)="nuevaVenta()"> <i class="fa-solid fa-plus"></i> Nueva venta</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="verificar==1">
+                <div class="col-12 p-4 card-header rounded-top">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-xl-3 col-lg-12 col-md-12 col-12">
+                        <div class="row">
+                                <div class="col-auto px-4 py-2"> Venta N° {{id_venta}}</div>
+                        </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-12 pt-xl-0 pt-md-2 pt-2">
+                            <button type="button" class="btn btn-primary btn-sm col-12" (click)="open(content)"> <i class="pi pi-search"></i> Buscar productos</button>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-12 pt-xl-0 pt-md-2 pt-2">
+                            <select name="cliente" id="cliente" class="form-control">
+                                <option value="">Seleccionar Cliente</option>
+                                <option [value]="datos.id_cliente" *ngFor="let datos of listaclientes;index as i " [selected]="datos.id_cliente == clienteactivo">{{datos.cliente_nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-12 col-12 text-end pt-xl-0 pt-md-2 pt-2">
+                            <button type="button" class="btn btn-success btn-sm col-12" (click)="terminar(id_venta)"> <i class="pi pi-cloud-upload"></i> Terminar esta venta</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 px-0 pb-4 bg-3 rounded-bottom overflow-x-auto">
+                    <table class="col-12">
+                        <thead class="color-1 fs-14">
+                        <tr>
+                            <th class="text-center pt-3" style="min-width: 50px">Cód.</th>
+                            <th class="text-center pt-3" style="min-width: 50px">Cant.</th>
+                            <th class="pt-3" style="min-width: 150px">Descripción</th>
+                            <th class="pt-3" style="min-width: 150px">Precio Unit.</th>
+                            <th class="pt-3" style="min-width: 100px">Precio Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let datos of listaventa; index as i; first as isFirst">
+                            <tr class="small">
+                                <td class="text-center">{{datos.id_producto}}</td>
+                                <td class="text-center">{{datos.venta_productos_cantidad}}</td>
+                                <td>{{datos.producto_nombre}}</td>
+                                <td>{{datos.venta_productos_precio | number}}</td>
+                                <td>{{datos.venta_productos_subtotal | number}}</td>
+                                <td>
+                                    <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger " (click)="quitar(datos.id_venta_productos)" title="Quitar producto"/>
+                                </td>
+                            </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" rowspan="3"></td>
+                            <td class="color-2">Neto</td>
+                            <td class="color-2">${{subtotal | number}}</td>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>Iva</td>
+                            <td></td>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold color-2">Total</td>
+                            <td class="fw-bold color-2">${{subtotal | number}}</td>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss" id="closebutton" #closebutton>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Venta de productos</h5>
+        <button type="button" class="btn-close " aria-label="Close" (click)="d('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 text-center text-white">    
+                
+                <div class="col-12">
+                    <p-table 
+                        #dt1
+                        [value]="listarProductos" 
+                        [paginator]="true"
+                        [rows]="10"
+                        [showCurrentPageReport]="true"
+                        [tableStyle]="{ 'min-width': '50rem' }"
+                        currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} entradas"
+                        [rowsPerPageOptions]="[10, 20, 30]"
+                        [loading]="loading"
+                        [globalFilterFields]="['producto_nombre']"
+                        styleClass="p-datatable-gridlines small"
+                        >
+                        <ng-template pTemplate="caption">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-4 text-start color-1">
+                                    Realice ventas seguras en la plataforma
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-8 text-end">
+                                    
+                                    <span class="p-input-icon-left ml-auto">
+                                        
+                                        <input pInputText type="text" (input)="dt1.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar" />
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="producto_nombre">Producto<p-sortIcon field="producto_nombre"></p-sortIcon></th>
+                                <th>Disponibles</th>
+                                <th>Cantidad</th>
+                                <th>$ venta</th>
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-datos>
+                            <tr >
+                                <td>{{ datos.producto_nombre }}</td>
+                                <td>{{ datos.producto_disponibles }} Uni.</td>
+                                <td><input type="number" pInputText name="cantidad{{ datos.id_producto }}" id="cantidad{{ datos.id_producto }}" value="1" class="form-control" style="width:80px" /></td>
+                                <td>
+                                    <input type="number" pInputText name="precio{{ datos.id_producto }}" id="precio{{ datos.id_producto }}" value="{{ datos.producto_venta }}" class="form-control"/>
+                                   
+                                </td>
+                                <td>
+                                    <button 
+                                        pButton 
+                                        pRipple 
+                                        label="Agregar" 
+                                        class="p-button-success"
+                                        icon="pi pi-check"
+                                        (click)="agregar(datos.id_producto)"
+                                        >
+                                    </button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="paginatorleft">
+                            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</ng-template>

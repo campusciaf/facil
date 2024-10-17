@@ -1,0 +1,114 @@
+<nav class="row navbar navbar-expand-lg nav-plataforma fixed-top z-2">
+
+    <div class="col-xl-2 col-lg-3 col-md-4 col-6">
+      <div class="row">
+        <div class="col-auto align-self-center">
+          <button class="btn color-2" (click)="clickEvent()"><i class="pi pi-bars bars"></i></button>
+        </div>
+        <div class="col-auto ">
+          <a class="btn marca m-0 p-0" routerLink="/dashboard">
+            <div class="row">
+                <div class="col-auto"><span class="logo-icon color-2">fac<img src="assets/img/logo.webp" class="mx-100" alt=""></span></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-8 col-lg-6 col-md-4 col-4 d-xl-block d-lg-block d-md-block d-none">
+      
+          <a class="btn color-2 pointer" aria-current="page" (click)="setThema('dark')" [ngClass]="{'highdark': isHighlighted, 'normal': !isHighlighted}">
+            <i class="pi pi-moon"></i>
+          </a>
+       
+    
+          <a class="btn color-2 pointer" aria-current="page" (click)="setThema('light')" [ngClass]="{'highlight': !isHighlighted, 'normal': isHighlighted}">
+            <i class="pi pi-sun"></i>
+          </a>
+
+    </div>
+
+    <div class="col-xl-2 col-lg-3 col-md-4 col-6 d-flex justify-content-end">
+      <div ngbDropdown class="d-inline-block droplogout">
+        <button type="button" class="btn color-1" id="dropdownBasic1" ngbDropdownToggle>
+          <div class="row ">
+            <div class="col align-self-center">
+                
+                    <img src="assets/img/null.webp" alt="" width="30px" height="30px" class="rounded-circle">
+               
+            </div>
+            <div class="col ps-0 align-self-center lh-12">
+                  <div class="row" style="--bs-gutter-x: 0;">
+                    <div class="color-2">{{user_name}}</div>
+                    <div *ngIf="user_state==1; then thenBlock else elseBlock"></div>
+                    <ng-template #thenBlock class="text-center color-2 m-0 p-0">Activo</ng-template>
+                    <ng-template #elseBlock>BLoqueado</ng-template>
+                  </div>
+            </div>
+            <div class="col ps-0 align-self-center ">
+              <i class="pi pi-angle-down"></i>
+          </div>
+        </div>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem routerLink="/dashboard">Mi Perfil</button>
+          <button ngbDropdownItem>Mi Dashboard</button>
+          <button ngbDropdownItem (click)="logAutUser()">Salir</button>
+        </div>
+      </div>
+    </div>
+
+
+</nav>
+
+<div class="d-flex z-1" id="wrapper">
+
+    <div class="bg-light border-right sidebar" id="sidebar-wrapper"  [ngClass]="status ? 'hide' : 'show'">
+      <div class="sidebar-heading">
+        <div class="col ps-0 align-self-center lh-16 ">
+          <div class="fw-normal color-2 fs-12 ">Simplificar lo complejo</div>
+      </div>
+      </div>
+      <div class="list-group list-group-flush">
+        <p-panelMenu [model]="items" class="menup" id="campo" ></p-panelMenu>
+      </div>
+    </div>
+  
+</div> 
+
+<div class="mini-menu position-fixed bottom-0 start-0  col-12 d-xl-none d-lg-none d-md-none d-block z-2">
+
+  <div class="row justify-content-center ">
+
+    <div class="col-2 text-center">
+      <a routerLink="/cliente" class="btn"><i class="pi pi-users" aria-hidden="true"></i><br><span>Cliente</span></a>
+    </div>
+
+    <div class="col-2 text-center">
+      <a routerLink="/compras"class="btn"><i class="pi pi-truck" aria-hidden="true"></i><br><span>Compra</span></a>
+    </div>
+    
+
+    <div class="col-2 text-center" style="position:relative">
+        <div class="row justify-content-center">
+            <div class="col-10 bg-especial rounded-circle shadow" style="margin-top: -28px; padding: 18px;">
+                <a routerLink="/ventas" class=""><i class="pi pi-shopping-cart fs-18" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="col-2 text-center">
+      <a routerLink="/pedidos" class="btn"><i class="pi pi-shopping-cart" aria-hidden="true"></i><br><span>Pedido</span></a>
+    </div>
+
+    <div class="col-2 text-center">
+        <a routerLink="/entregas"class="btn"><i class="pi pi-car" aria-hidden="true"></i><br><span>Entregas</span></a>
+    </div>
+
+    
+</div>
+
+   
+
+</div>
